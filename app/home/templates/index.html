@@ -1,0 +1,110 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+                
+    <main>
+        <div class="container-fluid">
+            <h1 class="mt-4">Mongo Monitor</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item active">Mongo Connection Table</li>
+
+            </ol>
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-table mr-1"></i>
+                    Mongo Connection List
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="conn_list" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                  <th>Host</th>
+                                    <th>Time</th>
+                                    <th>id</th>
+
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Host</th>
+                                    <th>Time</th>
+                                    <th>id</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                             {% for item in conn_users %}
+                                <tr>
+                                    <td>{{ item.host}}</td>
+                                    <td>{{ item.time}}</td>
+                                    <td>{{ item.id }}</td>
+                                </tr>
+                             {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+             <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item active">Mongo DataBases</li>
+
+            </ol>
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-table mr-1"></i>
+                    Mongo Database
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="database" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Size</th>
+                                    <th>Empty</th>
+
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Size</th>
+                                    <th>Empty</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                             {% for item in db %}
+                                <tr>
+                                    <td><a href="{{ item.name }}">{{ item.name }}</td>
+                                    <td>{{ item.sizeOnDisk }}</td>
+                                    <td>{{ item.empty }}</td>
+                                </tr>
+                             {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+                
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+    <script src="/static/assets/js/datatables-db.js"></script>
+    <script src="/static/assets/js/datatables-conn.js"></script>
+
+{% endblock javascripts %}
