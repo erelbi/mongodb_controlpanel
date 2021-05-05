@@ -49,7 +49,7 @@
 
 		showInLegend: true,
 		name: "virtual memory",
-		dataPoints: dps
+		dataPoints: dps2
 		},
 		{
 			type: "line",
@@ -57,7 +57,7 @@
 			yValueFormatString: "#### MB",
 			showInLegend: true,
 			name: "bits" ,
-			dataPoints: dps2
+			dataPoints: dps
 	}]
         });
 
@@ -75,11 +75,11 @@
 
                 dps.push({
                     x: xVal,
-                    y: virtual_mem
+                    y: bits_mem
                 });
                 dps2.push({
                     x: xVal,
-                    y: bits_mem
+                    y: virtual_mem
                 });
                 xVal++;
             }
@@ -88,8 +88,8 @@
                 dps.shift();
                 dps2.shift()
             }
-            chart.options.data[0].legendText = "bits:" + mongo_data[0]+"  MB";
-            chart.options.data[1].legendText = "virtual:" + mongo_data[1]+"  MB";
+            chart.options.data[0].legendText = "virtual" + mongo_data[0]+"  MB";
+            chart.options.data[1].legendText = "bits:" + mongo_data[1]+"  MB";
             chart.render();
         };
 
@@ -207,10 +207,6 @@
             count = count || 1;
 
             for (var j = 0; j < count; j++) {
-
-
-
-                console.log(mongo_data[4],mongo_data[5],mongo_data[6],mongo_data[7],mongo_data[8],mongo_data[9])
                 dps5.push({
                     x: xVal,
                     y: mongo_data[4]

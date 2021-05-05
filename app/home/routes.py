@@ -4,6 +4,7 @@ Copyright (c) 2019 - present AppSeed.us
 """
 
 from app.home import blueprint,ws
+import json
 from flask import render_template, redirect, url_for, request
 from flask_login import login_required, current_user
 from app import login_manager,mongo_client
@@ -40,20 +41,42 @@ def db_info(db_name):
         print(err)
         return render_template('page-500.html', segment='error')
 
-@blueprint.route('/<db_name>/<collection>')
+@blueprint.route('/<db_name>/<collection>',methods=['GET','POST'])
 @login_required
 def collection_info(db_name,collection):
-    try:
-        return render_template('documents.html', segment='collections',documents=MongoClient.documents_get(db_name,collection),db=db_name)
-    except Exception as err:
-        print(err)
-        return render_template('page-500.html', segment='error')
+    if request.method == 'POST':
+        status =  MongoClient.delete_document(db_name,collection,request.form['del'])
+        return make_response(jsonify(status), 200)
+    elif request.method == 'GET':
+        try:
+            return render_template('documents.html', segment='collections',documents=MongoClient.documents_get(db_name,collection),db=db_name)
+        except Exception as err:
+            print(err)
+            return render_template('page-500.html', segment='error')
 
 @blueprint.route('/users')
 @login_required
 def mongo_users():
     try:
         return render_template('users.html',segment='users',db=MongoClient.list_databases())
+    except Exception as err:
+        print(err)
+        return render_template('page-500.html', segment='error')
+
+@blueprint.route('/warning')
+@login_required
+def mongo_Logwarning():
+    try:
+        return render_template('startwarning.html',segment='warning')
+    except Exception as err:
+        print(err)
+        return render_template('page-500.html', segment='error')
+
+@blueprint.route('/getLog')
+@login_required
+def mongo_getLog():
+    try:
+        return render_template('getLog.html',segment='warning')
     except Exception as err:
         print(err)
         return render_template('page-500.html', segment='error')
@@ -81,11 +104,25 @@ def monitor_admin(db_name='admin'):
     return make_response(jsonify(status), 200)
 
 
+
+
 @ws.route('/echo')
-def echo_socket(socket):
-    while not socket.closed:
-        message = socket.receive()
-        socket.send(message)
+def echo_socket(socket,db_name='admin'):
+    try:
+        while not socket.closed:
+            message = socket.receive()
+            print(message)
+            if message == 'warning':
+                log = MongoClient.mongo_log(db_name,type='startupWarnings')
+                socket.send(json.dumps(log))
+            elif message == 'global':
+
+                log = MongoClient.mongo_log(db_name, type='global')
+                socket.send(json.dumps(log))
+    except Exception as err:
+        socket.send(json.dumps({'error':err}))
+    finally:
+        socket.closed
 
 def get_segment( request ):
 

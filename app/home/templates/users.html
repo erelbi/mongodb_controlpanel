@@ -19,12 +19,11 @@
          </div>
         <div class="row">
             <div class="container">
-                <ol>
+                     <ul class="list-group">
                         {% for item in db %}
-                    <li id="{{item.name}}"  onclick="location.href='{{ request.url }}/{{ item.name }}'" > {{ item.name }}</li>
+                      <li id="{{item.name}}"  onclick="location.href='{{ request.url }}/{{ item.name }}'" class="list-group-item">{{ item.name }}</li>
                         {% endfor %}
-                </ol>
-
+                        </ul>
             </div>
 
         </div>

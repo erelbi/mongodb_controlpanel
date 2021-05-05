@@ -36,8 +36,8 @@ def register_blueprints(app):
 def websocketThread(app):
     sockets = Sockets(app)
     sockets.register_blueprint(ws, url_prefix=r'/')
-    srv = ThreadedWebsocketServer("0.0.0.0", 5001, app)
-    srv.serve_forever()
+
+
 
 def configure_database(app):
 

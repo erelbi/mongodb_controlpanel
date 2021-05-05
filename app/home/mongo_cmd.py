@@ -1,4 +1,5 @@
 from app  import mongo_client
+from bson.objectid import ObjectId
 
 class MongoClient:
     db_name='admin'
@@ -102,6 +103,30 @@ class MongoClient:
             status['opcounters'] = mongostat['opcounters']
             status['globalLock'] = mongostat['globalLock']
             return  status
+        except Exception as err:
+            print(err)
+            return err
+        finally:
+            mongo_client.close()
+
+    @staticmethod
+    def delete_document(db_name,collection,_id):
+        try:
+            cursor = mongo_client[db_name]
+            document = getattr(cursor, collection)
+            document.delete_one({'_id': ObjectId(_id)})
+            return {'delete':'ok'}
+        except Exception as err:
+            print(err)
+            return err
+        finally:
+            mongo_client.close()
+
+    @staticmethod
+    def mongo_log(db_name,type):
+        try:
+            func = getattr(mongo_client, db_name)
+            return func.command({'getLog':type})
         except Exception as err:
             print(err)
             return err

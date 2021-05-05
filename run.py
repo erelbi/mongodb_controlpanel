@@ -10,6 +10,7 @@ from decouple import config
 
 from config import config_dict
 from app import create_app, db
+from flask_threaded_sockets import  ThreadedWebsocketServer
 
 # WARNING: Don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True)
@@ -29,4 +30,6 @@ app = create_app( app_config )
 Migrate(app, db)
 
 if __name__ == "__main__":
-    app.run()
+    #app.run()
+    srv = ThreadedWebsocketServer("0.0.0.0", 5000, app)
+    srv.serve_forever()
