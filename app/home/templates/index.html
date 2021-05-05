@@ -1,20 +1,61 @@
 {% extends "layouts/base.html" %}
 
+
 {% block title %} Dashboard {% endblock %} 
 
 <!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+{% endblock stylesheets %}
 
 {% block content %}
+      <!-- Modal -->
+
 
                 
     <main>
+
+
+
         <div class="container-fluid">
             <h1 class="mt-4">Mongo Monitor</h1>
             <ol class="breadcrumb mb-4">
                 <li class="breadcrumb-item active">Mongo Connection Table</li>
-
             </ol>
+            <div class="row">
+                <div class="col-xl-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-chart-area mr-1"></i>
+                            MongoDB Memory Chart
+                        </div>
+
+
+                         <div id="chartContainer" style="height: 370px; width:100%;"></div>
+
+
+                    </div>
+                </div>
+                <div class="col-xl-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-chart-bar mr-1"></i>
+                            Bar Chart Example
+                        </div>
+                        <div id="chartnetwork" style="height: 370px; width:100%;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+               <div class="col-xl-12">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-chart-bar mr-1"></i>
+                            Bar Chart Example
+                        </div>
+                        <div id="chartopertion" style="height: 370px; width:100%;"></div>
+                    </div>
+                </div>
+                  </div>
             <div class="card mb-4">
                 <div class="card-header">
                     <i class="fas fa-table mr-1"></i>
@@ -96,15 +137,20 @@
             </div>
         </div>
     </main>
+
                 
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
 
-    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+    <script src="/static/assets/js/jquery-3.5.1.js"></script>
+    <script src="/static/assets/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+    <script src="/static/assets/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+    <script src="/static/assets/js/canvasjs.min.js"></script>
     <script src="/static/assets/js/datatables-db.js"></script>
     <script src="/static/assets/js/datatables-conn.js"></script>
+    <script src="/static/assets/js/memory.js"></script>
+
 
 {% endblock javascripts %}

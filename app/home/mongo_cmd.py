@@ -1,7 +1,7 @@
 from app  import mongo_client
 
 class MongoClient:
-
+    db_name='admin'
     @staticmethod
     def usersInfo(db_name):
         try:
@@ -69,6 +69,45 @@ class MongoClient:
             return err
         finally:
             mongo_client.close()
+
+    @staticmethod
+    def mongo_get_users(db_name):
+        try:
+            func = getattr(mongo_client, db_name)
+            return func.command("usersInfo")
+        except Exception as err:
+            print(err)
+            return err
+        finally:
+            mongo_client.close()
+    @staticmethod
+    def mongo_create_user(db_name,user,passwd,role):
+        try:
+            func = getattr(mongo_client,db_name)
+            return func.command('createUser',user,pwd=passwd,roles=[role])
+        except Exception as err:
+            print(err)
+            return  err
+        finally:
+            mongo_client.close()
+
+    @staticmethod
+    def mongo_stat(db_name):
+        status=dict()
+        try:
+            func = getattr(mongo_client, db_name)
+            mongostat = func.command('serverStatus')
+            status['mem'] = mongostat['mem']
+            status['network'] = mongostat['network']
+            status['opcounters'] = mongostat['opcounters']
+            status['globalLock'] = mongostat['globalLock']
+            return  status
+        except Exception as err:
+            print(err)
+            return err
+        finally:
+            mongo_client.close()
+
 
 
 

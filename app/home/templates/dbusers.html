@@ -1,0 +1,127 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} USERS  TABLE{% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+ <link href="/static/assets/css/buttons.dataTables.min.css" rel="stylesheet"  />
+ <link href="/static/assets/css/jquery.dataTables.min.css" rel="stylesheet" />
+{% endblock stylesheets %}
+
+{% block content %}
+
+
+    <main>
+         <div class="container-fluid">
+            <h1 class="mt-4">DB Users</h1>
+        <nav aria-label="breadcrumb mb-4">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('home_blueprint.index') }}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('home_blueprint.mongo_users') }}">DB Users</a></li>
+            <li class="breadcrumb-item"><a href="{{ request.url }}">Users Info</a></li>
+          </ol>
+        </nav>
+         </div>
+                     <!-- Modal -->
+
+          <div class="modal fade" id="createUser" role="dialog">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                </div>
+                <div class="modal-body">
+                  <form role="form" method="post" action="">
+
+                                {{ form.hidden_tag() }}
+
+                                <div class="form-row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="small mb-1" for="inputFirstName">Username</label>
+                                            {{ form.username(placeholder="Username", class="form-control") }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                      <label class="small mb-1" for="inputPassword">Password</label>
+                                   {{ form.password(placeholder="Password", class="form-control", type="password") }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="small mb-1" for="inputRole">Roles</label>
+                                    {{ form.roles(placeholder="Roles", class="form-control") }}
+                                </div>
+
+                                <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
+                                    <button type="submit" name="createuser" class="btn btn-primary">Create</button>
+
+                                </div>
+                            </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+            <!--Table-->
+          <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered" id="usertable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                     <th>user id</th>
+                                    <th>user</th>
+                                    <th>user uuid</th>
+                                    <th>database</th>
+                                    <th>role</th>
+                                    <th>mechanisms</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>user id</th>
+                                    <th>user</th>
+                                    <th>user uuid</th>
+                                    <th>database</th>
+                                    <th>role</th>
+                                    <th>mechanisms</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                             {% for item in db_users['users'] %}
+                                <tr>
+                                    <td>{{ item._id }}</td>
+                                    <td>{{ item.user }}</td>
+                                    <td>{{ item.userId }}</td>
+                                    <td>{{ item.db }}</td>
+                                    <td>{{ item.roles}}</td>
+                                    <td>{{ item.mechanisms }}</td>
+                                </tr>
+                             {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <button type="button"  id="createbutton" class="btn btn-info btn-lg" style="visibility: hidden;" data-toggle="modal" data-target="#createUser">Open Modal</button>
+
+
+
+
+    </main>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+    <script src="/static/assets/js/jquery-3.5.1.js"></script>
+    <script src="/static/assets/js/jquery.dataTables.min.js"></script>
+    <script src="/static/assets/js/dataTables.buttons.min.js"></script>
+    <script src="/static/assets/js/datatables-users.js"></script>
+{% endblock javascripts %}

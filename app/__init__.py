@@ -10,8 +10,9 @@ from importlib import import_module
 from logging import basicConfig, DEBUG, getLogger, StreamHandler
 from os import path
 from pymongo import MongoClient
-
-
+from flask_cors import CORS
+from flask_threaded_sockets import Sockets, ThreadedWebsocketServer
+from app.home import ws
 
 
 mongo_client = MongoClient()
@@ -32,6 +33,11 @@ def register_blueprints(app):
 
 
 
+def websocketThread(app):
+    sockets = Sockets(app)
+    sockets.register_blueprint(ws, url_prefix=r'/')
+    srv = ThreadedWebsocketServer("0.0.0.0", 5001, app)
+    srv.serve_forever()
 
 def configure_database(app):
 
@@ -49,4 +55,6 @@ def create_app(config):
     register_extensions(app)
     register_blueprints(app)
     configure_database(app)
+    CORS(app)
+    websocketThread(app)
     return app

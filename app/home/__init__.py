@@ -12,3 +12,4 @@ blueprint = Blueprint(
     template_folder='templates',
     static_folder='static'
 )
+ws = Blueprint(r'ws', __name__)

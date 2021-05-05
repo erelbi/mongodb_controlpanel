@@ -3,17 +3,22 @@
 {% block title %} Charts {% endblock %} 
 
 <!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+
+{% endblock stylesheets %}
 
 {% block content %}
 
     <main>
          <div class="container-fluid">
-            <h1 class="mt-4">DB Collections</h1>
-            <ol class="breadcrumb mb-4">
-                <li class="breadcrumb-item active">Mongo Connection Cards</li>
-
-            </ol>
+            <h1 class="mt-4">DB Documents</h1>
+              <nav aria-label="breadcrumb mb-4">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('home_blueprint.index') }}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('home_blueprint.db_info',db_name=db)}}">Collections</a></li>
+               <li class="breadcrumb-item"><a href="{{ request.url }}">Documents</a></li>
+          </ol>
+        </nav>
         <div class="row">
          <div class="container-fluid">
              {% for item in documents %}
