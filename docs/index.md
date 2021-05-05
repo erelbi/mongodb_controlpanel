@@ -75,5 +75,17 @@ def create_app(config):
 ```sh
 python3 run.py
 ```
+###  Giriş Ekranı
+![Login Page](giriş.png)
+
+###  Monitor Ekranı
+![Dashborad Page](dashboard.png)
+
+###  Log Ekranı
+![Log Page](log.png)
+
+### Kullanıcı Ekleme Ekranı
+![User Page](user.png)
+
 
 
