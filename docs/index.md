@@ -79,7 +79,7 @@ python3 run.py
 ![Login Page](giriş.png)
 
 ###  Monitor Ekranı
-![Dashborad Page](dashboard.png)
+![Dashborad Page](dashborad.png)
 
 ###  Log Ekranı
 ![Log Page](log.png)
