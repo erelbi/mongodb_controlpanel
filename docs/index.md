@@ -1,37 +1,79 @@
-## Welcome to GitHub Pages
+## Nedir?
 
-You can use the [editor on GitHub](https://github.com/erelbi/mongodb_controlpanel/edit/master/docs/index.md) to maintain and preview the content for your website in Markdown files.
+PyMongo kütüphanesi ve mükemmel flask çatısı birazda websocket kullanarak oluşturulmuş bir kontrol panel. Basit çok basit bir şekilde yazıldı. Bir çok eksikliği mevcut. Hafta sonu hobi projesi...
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### Neler Yapar
 
-### Markdown
+MongoDb nin network, memory, operationlarını anlık olarak izler ve canvasjs yardımıyla grafiğe döker. Kullanıcı oluşturur(ama rol tanımlaması kısımlarını yapmadım o kısmın çok eksiği var). Connection listesini tablo şeklinde sunar. Document ve collectionları görüntüler. Collectionları siler. Global ve setwarning Loglarını websocket yardımıyla görüntüler.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+### Neler Yapıcaz
+
+- Ldap otantikasyonu
+- CRUD işlemleri
+- Backup ( çalışmalar Başladı)
+- Hata Loglarının kaydı
+
+## Başlarken
 
 ```markdown
-Syntax highlighted code block
+pip3 install -r requirements.txt
 
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+## init Dosyanı kendinize göre Düzenleyin
+```python
 
-### Jekyll Themes
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/erelbi/mongodb_controlpanel/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
 
-### Support or Contact
+mongo_client = MongoClient()
+mongo_client = MongoClient('mongodb://172.16.0.11:27017/')
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+db = SQLAlchemy()
+login_manager = LoginManager()
+
+def register_extensions(app):
+    db.init_app(app)
+    login_manager.init_app(app)
+
+def register_blueprints(app):
+    for module_name in ('base', 'home'):
+        module = import_module('app.{}.routes'.format(module_name))
+        app.register_blueprint(module.blueprint)
+
+
+
+
+def websocketThread(app):
+    sockets = Sockets(app)
+    sockets.register_blueprint(ws, url_prefix=r'/')
+
+
+
+def configure_database(app):
+
+    @app.before_first_request
+    def initialize_database():
+        db.create_all()
+
+    @app.teardown_request
+    def shutdown_session(exception=None):
+        db.session.remove()
+
+def create_app(config):
+    app = Flask(__name__, static_folder='base/static')
+    app.config.from_object(config)
+    register_extensions(app)
+    register_blueprints(app)
+    configure_database(app)
+    CORS(app)
+    websocketThread(app)
+    return app
+
+
+```
+
+```sh
+python3 run.py
+```
+
+
