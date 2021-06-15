@@ -1,3 +1,12 @@
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-S11TC7Z7E1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-S11TC7Z7E1');
+</script>
 ## Nedir?
 
 PyMongo kütüphanesi ve mükemmel flask çatısı birazda websocket kullanarak oluşturulmuş bir kontrol panel. Basit çok basit bir şekilde yazıldı. Bir çok eksikliği mevcut. Hafta sonu hobi projesi...
